@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Enfusion Redirect</title>    
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    <title>Enfusion Workbench Protocol Redirect</title>
-
     <script>
         tailwind.config = {
             theme: {
@@ -21,34 +20,42 @@
     </script>
 </head>
 <body class="bg-gray-900 text-center mt-24 text-gray-300 p-5">
-    <p class="text-xl">Opening <span class="text-sky-600 font-bold">Enfusion Workbench</span></p>
-    <a class="mt-5 inline-block font-mono font-bold text-xl p-3 px-6 bg-gray-800 rounded shadow shadow-lg" id="wb-uri" target="_blank" href="#">URI</a>
-</body>
-<script>
-    window.onload = function () { 
-        const params = new Proxy(new URLSearchParams(window.location.search), {
-            get: (searchParams, prop) => searchParams.get(prop),
-        });
+    <p class="text-xl">Opening <span class="text-sky-600 font-bold">Enfusion Workbench</span> now..</p>
+    <p class="text-sm text-gray-400">Or click below. You may close this window after Workbench has opened.</p>
+    <a class="mt-5 inline-block font-mono font-bold text-xl p-3 px-6 bg-gray-800 rounded shadow shadow-lg" id="wb-uri" target="_self" href="#">
+        <div>
+            URI
+        </div>
+    </a>
 
-        let to = params.to;
+    <script>
+        window.onload = function () { 
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+    
+            let to = params.to;
+    
+            if (!to) return;
+    
+            if (!to.startsWith("enfusion://"))
+            {
+                to = "enfusion://" + to;
+            }
+    
+            const linkElement = document.getElementById("wb-uri");
+    
+            linkElement.href = to;
+            linkElement.innerText = to;
 
-        if (!to) return;
-
-        if (!to.startsWith("enfusion://"))
-        {
-            to = "enfusion://" + to;
+            setTimeout(function() {
+                linkElement.click();
+        
+                //window.location.href = to;
+                //window.open(to, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+                //window.location.replace(to);
+            }, 500);
         }
-
-        let linkElement = document.getElementById("wb-uri");
-
-        linkElement.href = to;
-        linkElement.innerText = to;
-
-        linkElement.click();
-
-        //window.location.href = to;
-        //window.open(to, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
-        //window.location.replace(to);
-    }
-</script>
+    </script>
+</body>
 </html>
