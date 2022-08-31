@@ -44,7 +44,10 @@
         linkElement.href = to;
         linkElement.innerText = to;
 
-        window.location.href = to;
+        linkElement.click();
+
+        //window.location.href = to;
+        //window.open(to, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
         //window.location.replace(to);
     }
 </script>
